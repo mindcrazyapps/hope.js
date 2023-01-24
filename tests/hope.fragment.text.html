@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+	<script type="text/javascript" src="../src/hope.js"></script>
+	<script type="text/javascript" src="../src/hope.test.js"></script>
+	<script type="text/javascript" src="../src/hope.range.js"></script>
+	<script type="text/javascript" src="../src/hope.fragment.text.js"></script>
+</head>
+<body>
+<div id="hopeTestOutput"></div>
+<script type="text/javascript">
+
+	var test = hope.test.create();
+
+	test.testDelete = function() {
+		var text = hope.fragment.text.create('1234567890');
+		var result = text.delete( [ 3, 6 ] );
+		test.assertTrue( text.length == 10 );
+		test.assertTrue( result.length == 7 );
+		test.assertEquals( result+'', '1237890' );
+	}
+
+	test.testCopy = function() {
+		var text = hope.fragment.text.create('1234567890');
+		var copiedContent = text.copy( [ 3, 6 ] );
+		test.assertTrue( text.length == 10 );
+		test.assertTrue( copiedContent.length == 3 );
+		test.assertEquals( text+'', '1234567890' );
+		test.assertEquals( copiedContent+'', '456' );
+	}
+
+	test.testInsert = function() {
+		var text = hope.fragment.text.create('1234567890');
+		var result = text.insert( 3, 'test' );
+		test.assertTrue( text.length == 10 );
+		test.assertTrue( result.length == 14 );
+		test.assertEquals( result+'', '123test4567890' );
+		test.assertEquals( text+'', '1234567890' );
+	}
+
+	test.testSearchText = function() {
+		var text = hope.fragment.text.create('1234567890');
+		var result = text.search('234');
+		test.assertEquals( result[0], hope.range.create(1,4) );
+	}
+
+	test.testSearchRe = function() {
+		var text = hope.fragment.text.create('1234567890');
+		var result = text.search(/2.*?4/);
+		test.assertEquals( result[0], hope.range.create(1,4) );
+	}
+
+	test.testSearchReGlobal = function() {
+		var text = hope.fragment.text.create('12345678901234567890');
+		var result = text.search(/2.*?4/g);
+		test.assertEquals( result[0], hope.range.create(1,4) );
+		test.assertEquals( result[1], hope.range.create(11,14) );
+	}
+
+	test.run();
+
+</script>
+</body>
+</html>

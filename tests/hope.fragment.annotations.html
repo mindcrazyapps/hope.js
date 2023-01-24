@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+	<script type="text/javascript" src="../src/hope.js"></script>
+	<script type="text/javascript" src="../src/hope.test.js"></script>
+	<script type="text/javascript" src="../src/hope.range.js"></script>
+	<script type="text/javascript" src="../src/hope.annotation.js"></script>
+	<script type="text/javascript" src="../src/hope.fragment.annotations.js"></script>
+</head>
+<body>
+<div id="hopeTestOutput" style="white-space: pre"></div>
+<script type="text/javascript">
+
+	var test = hope.test.create();
+
+	test.testParse = function() {
+		var annotations = '0-10:h1\n12-20:p\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		test.assertEquals( annotationsFragment.list.length, 2 );
+		var compiled = annotationsFragment + '';
+		test.assertTrue( compiled == annotations );
+	}
+
+	test.testClean = function() {
+		var annotations = '0-10:h1\n12-20:p\n5-10:strong\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		test.assertEquals( annotationsFragment+'', '0-10:h1\n5-10:strong\n12-20:p\n' );
+	}
+
+	test.testDelete = function() {
+		var annotations = '0-10:h1\n12-20:p\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var result = annotationsFragment.delete( [ 5, 10 ] );
+		test.assertEquals( annotationsFragment+'', annotations );
+		test.assertEquals( result+'', '0-5:h1\n7-15:p\n' );		
+	}
+
+	test.testDeleteBlock = function() {
+		var annotations = '0-10:h1\n12-20:p\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var result = annotationsFragment.delete( [ 5, 15 ] );
+		test.assertEquals( annotationsFragment+'', annotations );
+		test.assertEquals( result+'', '0-10:h1\n' );		
+	}
+
+	test.testCopy = function() {
+		var annotations = '0-10:h1\n4-8:em\n';
+		// 1111111111
+		//     eeee
+		// 11-------1
+		// 111         cut: 11eeee1		
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var copy = annotationsFragment.copy( [2, 9 ] );
+		test.assertEquals( ''+copy, '0-7:h1\n2-6:em\n' ); // 	
+	}
+
+	test.testGrow = function() {
+		var annotations = '0-10:h1\n12-20:p\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var result = annotationsFragment.grow(10, 5);
+		test.assertEquals( result+'', '0-15:h1\n17-25:p\n' );
+	}
+
+	test.testCopy = function() {
+		var annotations = '0-10:h1\n12-20:p\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var copyList = annotationsFragment.copy( [ 5, 10 ] );
+		test.assertEquals( copyList+'', '0-5:h1\n' );		
+	}
+
+	test.testHas = function() {
+		var annotations = '0-10:h1\n4-8:em\n12-20:p\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		test.assertEquals( annotationsFragment.has( [ 5, 6 ], 'em' ), annotationsFragment.list[1] );
+		test.assertFalse( annotationsFragment.has( [ 5, 6 ], 'strong' ) )
+		test.assertFalse( annotationsFragment.has( [ 10, 11], 'h1' ) );	
+	}
+
+	test.testGet = function() {
+		var annotations = '0-10:h1\n4-8:em\n12-20:p\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var annotation = annotationsFragment.get( 1 );
+		test.assertEquals( ''+annotation, '4-8:em' );
+	}
+
+	test.testClear = function() {
+		var annotations = '0-10:h1\n4-8:em\n6-10:strong\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var result = annotationsFragment.clear( [2, 9 ] );
+		test.assertEquals( ''+result, '0-10:h1\n9-10:strong\n' );
+	}
+
+	test.testRemove = function() {
+		var annotations = '0-10:h1\n4-8:em\n6-10:strong\n';
+		var annotationsFragment = hope.fragment.annotations.create( annotations );
+		var resultNone = annotationsFragment.remove( [0,3], 'em' );
+		test.assertEquals( annotations, ''+resultNone);
+
+		var resultLeft = annotationsFragment.remove( [2,6], 'em' );
+		test.assertEquals( '0-10:h1\n6-8:em\n6-10:strong\n', ''+resultLeft );
+		
+		var resultRight = annotationsFragment.remove( [6,10], 'em' );
+		test.assertEquals( '0-10:h1\n4-6:em\n6-10:strong\n', ''+resultRight );
+		
+		var resultFull = annotationsFragment.remove( [4,8], 'em' );
+		test.assertEquals( '0-10:h1\n6-10:strong\n', ''+resultFull );
+		
+		var resultSplit = annotationsFragment.remove( [5,7], 'em' );
+		test.assertEquals( '0-10:h1\n4-5:em\n6-10:strong\n7-8:em\n', ''+resultSplit );
+	}
+
+	test.run();
+
+</script>
+</body>
+</html>
