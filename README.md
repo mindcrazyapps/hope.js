@@ -6,7 +6,7 @@
 
 <img src="https://user-images.githubusercontent.com/123137817/214616235-5db5529f-31a5-422c-b16e-3dc4b6885693.png" alt="image"/>
 
-```
+```ruby
 0-44:h3
 43-44:br
 46-80:p
