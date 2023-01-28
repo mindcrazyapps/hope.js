@@ -6,3 +6,32 @@
 
 <img src="https://user-images.githubusercontent.com/123137817/214616235-5db5529f-31a5-422c-b16e-3dc4b6885693.png" alt="image"/>
 
+```
+0-44:h3
+43-44:br
+46-80:p
+46-80:strong
+74-80:a href="https://github.com/poef/cobalt/"
+81-177:p
+154-164:a href="http://en.wikipedia.org/wiki/Ted_Nelson"
+179-406:p
+243-251:a href="http://en.wikipedia.org/wiki/Project_Xanadu#Original_17_rules"
+409-721:p
+479-502:a href="http://blog.codinghorror.com/what-you-cant-see-you-cant-get/"
+723-977:p
+979-1261:p
+1223-1229:em
+1243-1249:em
+1263-1394:p
+1396-1406:h3
+1408-1506:li
+1408-2389:ul
+1508-1660:li
+1662-1736:li
+1738-1797:li
+1799-1963:li
+1965-2110:li
+2112-2388:li
+2390-2491:p
+2441-2466:a href="https://github.com/poef/hope"
+```
